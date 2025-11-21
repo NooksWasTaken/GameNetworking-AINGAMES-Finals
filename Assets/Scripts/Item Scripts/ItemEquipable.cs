@@ -6,17 +6,16 @@ public class ItemEquipable : MonoBehaviourPun, IPunObservable
     private Rigidbody rb;
     private Transform itemEquipPointTransform;
 
-    // Network interpolation variables
     private Vector3 networkPosition;
     private Quaternion networkRotation;
+    private Vector3 networkVelocity;
+    private Vector3 networkAngularVelocity;
+
     private float followSpeed = 20f;
 
     private void Awake()
     {
-        // get the Rigidbody attached to this object
         rb = GetComponent<Rigidbody>();
-
-        // set interpolation for smooth physics movement
         rb.interpolation = RigidbodyInterpolation.Interpolate;
     }
 
@@ -25,19 +24,13 @@ public class ItemEquipable : MonoBehaviourPun, IPunObservable
     {
         this.itemEquipPointTransform = itemEquipPointTransform;
 
-        // take ownership so the local player can control this item
         if (photonView != null)
         {
             photonView.RequestOwnership();
         }
 
-        // add drag so the item doesn't jitter
         rb.linearDamping = 5f;
-
-        // prevents item from rotating while equipped
         rb.freezeRotation = true;
-
-        // disable gravity so the item doesn't jitter and force it to fall
         rb.useGravity = false;
     }
 
@@ -46,35 +39,32 @@ public class ItemEquipable : MonoBehaviourPun, IPunObservable
     {
         this.itemEquipPointTransform = null;
 
-        // unparent the item
         transform.SetParent(null);
-
-        // reset drag to default so it falls normally
         rb.linearDamping = 0f;
-
-        // re-enable gravity so the item drops to the ground
         rb.useGravity = true;
-
-        // allow rotation again
         rb.freezeRotation = false;
     }
 
     private void LateUpdate()
     {
-        // if we own the item, move it toward the equip point
         if (itemEquipPointTransform != null && photonView.IsMine)
         {
+            // smooth follow (same as ItemGrabable)
             Vector3 newPos = Vector3.Lerp(rb.position, itemEquipPointTransform.position, followSpeed * Time.fixedDeltaTime);
-            rb.MovePosition(newPos);
-
             Quaternion newRot = Quaternion.Lerp(rb.rotation, itemEquipPointTransform.rotation, followSpeed * Time.fixedDeltaTime);
+
+            rb.MovePosition(newPos);
             rb.MoveRotation(newRot);
         }
-        // if we don't own it, interpolate to networked position/rotation
         else if (!photonView.IsMine)
         {
-            rb.MovePosition(Vector3.Lerp(rb.position, networkPosition, followSpeed * Time.deltaTime));
-            rb.MoveRotation(Quaternion.Lerp(rb.rotation, networkRotation, followSpeed * Time.deltaTime));
+            // remote smoothing
+            rb.MovePosition(Vector3.Lerp(rb.position, networkPosition, followSpeed * Time.fixedDeltaTime));
+            rb.MoveRotation(Quaternion.Lerp(rb.rotation, networkRotation, followSpeed * Time.fixedDeltaTime));
+
+            // apply synced velocity to keep physics aligned
+            rb.linearVelocity = networkVelocity;
+            rb.angularVelocity = networkAngularVelocity;
         }
     }
 
@@ -83,15 +73,19 @@ public class ItemEquipable : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting)
         {
-            // owner sends position/rotation
+            // send full rigidbody state
             stream.SendNext(rb.position);
             stream.SendNext(rb.rotation);
+            stream.SendNext(rb.linearVelocity);
+            stream.SendNext(rb.angularVelocity);
         }
         else
         {
-            // remote clients receive
+            // receive state
             networkPosition = (Vector3)stream.ReceiveNext();
             networkRotation = (Quaternion)stream.ReceiveNext();
+            networkVelocity = (Vector3)stream.ReceiveNext();
+            networkAngularVelocity = (Vector3)stream.ReceiveNext();
         }
     }
 }
