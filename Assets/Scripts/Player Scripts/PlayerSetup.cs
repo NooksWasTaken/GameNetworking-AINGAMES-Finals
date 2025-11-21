@@ -1,8 +1,6 @@
 using UnityEngine;
 using Photon.Pun;
 
-// too lazy to comment this part
-// this script is just for double checking to make sure which is the local and which is the remote player
 public class PlayerSetup : MonoBehaviour
 {
     private PhotonView pv;
@@ -10,6 +8,9 @@ public class PlayerSetup : MonoBehaviour
     public PlayerCamera playerCam;
     public Camera mainCam;
     public AudioListener listener;
+
+    // Add UI reference
+    public GameObject playerCanvas; // assign the canvas here
 
     private void Awake()
     {
@@ -37,6 +38,8 @@ public class PlayerSetup : MonoBehaviour
         if (mainCam != null) mainCam.enabled = true;
         if (listener != null) listener.enabled = true;
 
+        if (playerCanvas != null) playerCanvas.SetActive(true);
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -48,5 +51,7 @@ public class PlayerSetup : MonoBehaviour
 
         if (mainCam != null) mainCam.enabled = false;
         if (listener != null) listener.enabled = false;
+
+        if (playerCanvas != null) playerCanvas.SetActive(false);
     }
 }

@@ -11,7 +11,7 @@ public class ItemGrabable : MonoBehaviourPun, IPunObservable
     private Quaternion networkRotation;
     private Vector3 networkVelocity;
     private Vector3 networkAngularVelocity;
-    private float followSpeed = 15f;
+    private float followSpeed = 20f;
 
     private void Awake()
     {
@@ -44,7 +44,7 @@ public class ItemGrabable : MonoBehaviourPun, IPunObservable
         rb.useGravity = true;
     }
 
-    private void FixedUpdate()
+    private void LateUpdate()
     {
         if (itemGrabPointTransform != null && photonView.IsMine)
         {
