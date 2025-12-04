@@ -2,7 +2,7 @@
 - Project name: GameNetworking-AINGAMES-Finals
 - Unity version: Unity 6000.2.12f1
 - Active game object:
-  - Name: Cube (1)
-  - Tag: Untagged
-  - Layer: Grabable Item
+  - Name: Main Camera
+  - Tag: MainCamera
+  - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

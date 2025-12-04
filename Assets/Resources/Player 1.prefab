@@ -2944,11 +2944,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fa7a4a594962d44696066eceac0adc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeadBobbing
-  amount: 0.01
-  frequency: 20
-  smoothness: 15
-  tiltAmount: 2
-  tiltSmoothness: 8
+  amount: 0.05
+  frequency: 10
+  smoothness: 8
+  sprintMultiplier: 1.86
 --- !u!1 &6363054541758979438
 GameObject:
   m_ObjectHideFlags: 0
