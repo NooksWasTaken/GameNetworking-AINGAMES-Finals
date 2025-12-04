@@ -2762,9 +2762,9 @@ GameObject:
   - component: {fileID: 6807438110283029491}
   - component: {fileID: 4061252595784118107}
   - component: {fileID: 8340329115116253027}
+  - component: {fileID: 6373220426494881050}
   - component: {fileID: 2520340552562239102}
   - component: {fileID: 4388011698725714610}
-  - component: {fileID: 6373220426494881050}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2892,6 +2892,22 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &6373220426494881050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6305134959864580071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fa7a4a594962d44696066eceac0adc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HeadBobbing
+  amount: 0.05
+  frequency: 10
+  smoothness: 8
+  sprintMultiplier: 1.86
 --- !u!114 &2520340552562239102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2932,22 +2948,6 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &6373220426494881050
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6305134959864580071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fa7a4a594962d44696066eceac0adc2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HeadBobbing
-  amount: 0.05
-  frequency: 10
-  smoothness: 8
-  sprintMultiplier: 1.86
 --- !u!1 &6363054541758979438
 GameObject:
   m_ObjectHideFlags: 0
@@ -3904,7 +3904,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5d75bbed73d32a1438f13858b9032aef, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3974400149628006261, guid: 5d75bbed73d32a1438f13858b9032aef, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
