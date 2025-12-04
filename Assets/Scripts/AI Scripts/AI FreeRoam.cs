@@ -1,13 +1,15 @@
-    using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.AI;
 using System.Threading;
+using BehaviorDesigner.Runtime.Tasks.Unity.UnityGameObject;
 
 public class AIFreeRoam : MonoBehaviourPun
 {
     NavMeshAgent agent;
+    Animator animator;
 
     [SerializeField] LayerMask groundlayer;
 
@@ -30,6 +32,7 @@ public class AIFreeRoam : MonoBehaviourPun
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -39,6 +42,7 @@ public class AIFreeRoam : MonoBehaviourPun
 
         Roam();
         FleeFromTrash();
+
     }
 
     private void FleeFromTrash()
@@ -49,6 +53,8 @@ public class AIFreeRoam : MonoBehaviourPun
 
         StopAllCoroutines();
         isWaiting = false;
+        animator.SetBool("isWalking", true);
+        animator.SetBool("isWaiting", false);
 
         Vector3 fleeDir = Vector3.zero;
         foreach (Collider trash in nearbyTrash)
@@ -80,6 +86,8 @@ public class AIFreeRoam : MonoBehaviourPun
         else
         {
             agent.SetDestination(dest);
+            animator.SetBool("isWalking", true);
+            animator.SetBool("isWaiting", false);
 
             if (Vector3.Distance(transform.position, dest) < 1f)
             {
@@ -92,6 +100,8 @@ public class AIFreeRoam : MonoBehaviourPun
     IEnumerator Idle()
     {
         isWaiting = true;
+        animator.SetBool("isWaiting", true);
+        animator.SetBool("isWalking", false);
         agent.SetDestination(transform.position); // Stop movement
 
         float wait = Random.Range(minWait, maxWait);
