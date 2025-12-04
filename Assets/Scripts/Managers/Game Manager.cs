@@ -80,6 +80,11 @@ public class GameManager : MonoBehaviourPun
         if (trashFillImage.fillAmount >= 1f && WinScreen != null)
             {
                 WinScreen.SetActive(true);
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    photonView.RPC("RPC_GameOver", RpcTarget.All);
+                }
+                    
             }
         }
 
@@ -88,6 +93,17 @@ public class GameManager : MonoBehaviourPun
             float percentage = ((float)currentTrashCount / maxTrashCount) * 100f;
             trashPercentageText.text = Mathf.RoundToInt(percentage) + "%";
         }
+    }
+
+    [PunRPC]
+    private void RPC_GameOver()
+    {
+        RB_PlayerMove[] players = GameObject.FindObjectsByType<RB_PlayerMove>(FindObjectsSortMode.None);
+
+        foreach (var player in players)
+            player.enabled = false;
+
+        SoundManager.StopLoopingSound(SoundType.BGM);
     }
 
 }
