@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 7926677359877756199}
   - component: {fileID: 5660309926710666945}
   - component: {fileID: 7199566986373905776}
+  - component: {fileID: -799184978460227747}
   m_Layer: 6
   m_Name: Beer Bottle
   m_TagString: Untagged
@@ -227,3 +228,19 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!208 &-799184978460227747
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3894887949858533199}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.90000004, y: 2.9090002, z: 0.90000004}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
