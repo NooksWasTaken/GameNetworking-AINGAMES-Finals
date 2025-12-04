@@ -326,7 +326,7 @@ RectTransform:
   m_GameObject: {fileID: 913312715509223664}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.20099, y: 0.20099, z: 0.20099}
+  m_LocalScale: {x: 0.22778806, y: 0.22778806, z: 0.22778806}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4618714242529283454}
@@ -1265,11 +1265,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdcd3c0f29b736d4f9b4a9a267df77a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteraction
-  interactDistance: 3
+  interactDistance: 1.5
   holdPoint: {fileID: 4690688851319702439}
   interactMask:
     serializedVersion: 2
     m_Bits: 64
+  defaultCrosshair: {fileID: 5482351228086873384}
+  GrabIcon: {fileID: 8882100232943485118}
+  HoldingIcon: {fileID: 5576569297413613433}
 --- !u!114 &1912952316550166852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1282,7 +1285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7113894f04316d94b8ee29e3e5b0883e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipment
-  equipmentA: {fileID: 2537952751897619458}
+  equipmentA: {fileID: 3297595954188155616}
   equipmentB: {fileID: 2708026705655620959}
   currentState: 3
 --- !u!1 &2459369691069558545
@@ -1569,6 +1572,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8740786811726545900}
+  - {fileID: 9188038970711606810}
+  - {fileID: 5372587284459012574}
   m_Father: {fileID: 4551338049464294471}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1940,6 +1945,81 @@ Transform:
   - {fileID: 6109540754076486026}
   m_Father: {fileID: 6829547527112774594}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3773283679530246765
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5372587284459012574}
+  - component: {fileID: 6438984179504996914}
+  - component: {fileID: 5576569297413613433}
+  m_Layer: 8
+  m_Name: Hold Icon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5372587284459012574
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3773283679530246765}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.52310735, y: 0.52310735, z: 0.52310735}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4618714242529283454}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &6438984179504996914
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3773283679530246765}
+  m_CullTransparentMesh: 1
+--- !u!114 &5576569297413613433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3773283679530246765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 260caec93c9beb448916676c451c583d, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &4237051538427966515
 GameObject:
   m_ObjectHideFlags: 0
@@ -2682,6 +2762,8 @@ GameObject:
   - component: {fileID: 6807438110283029491}
   - component: {fileID: 4061252595784118107}
   - component: {fileID: 8340329115116253027}
+  - component: {fileID: 2520340552562239102}
+  - component: {fileID: 4388011698725714610}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2809,6 +2891,46 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &2520340552562239102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6305134959864580071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonUnityNetworking::Photon.Pun.PhotonView
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 4388011698725714610}
+  - {fileID: 8528372438237535169}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &4388011698725714610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6305134959864580071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonUnityNetworking::Photon.Pun.PhotonTransformView
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &6363054541758979438
 GameObject:
   m_ObjectHideFlags: 0
@@ -2981,6 +3103,81 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 85.66228, z: -7.927866}
     m_Extent: {x: 102.45599, y: 95.47479, z: 27.308996}
   m_DirtyAABB: 0
+--- !u!1 &7110820156285273453
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9188038970711606810}
+  - component: {fileID: 6928138286597388628}
+  - component: {fileID: 8882100232943485118}
+  m_Layer: 8
+  m_Name: Grab Icon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &9188038970711606810
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7110820156285273453}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.52310735, y: 0.52310735, z: 0.52310735}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4618714242529283454}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &6928138286597388628
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7110820156285273453}
+  m_CullTransparentMesh: 1
+--- !u!114 &8882100232943485118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7110820156285273453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: fcc6c26d4eb25774c97c8d68bda370c0, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &7210691673437506625
 GameObject:
   m_ObjectHideFlags: 0
@@ -3263,6 +3460,7 @@ GameObject:
   - component: {fileID: 7139947290265800765}
   - component: {fileID: 7192846701358507016}
   - component: {fileID: 6444125847350925485}
+  - component: {fileID: 6153294244692542971}
   - component: {fileID: 2708026705655620959}
   m_Layer: 7
   m_Name: Litter Picker (Temp)
@@ -4441,7 +4639,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.12007926, y: 0.10988398, z: 2.3420208}
   m_Center: {x: 0.005461013, y: -0.00000002215156, z: 0.21014087}
@@ -4463,10 +4661,27 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 1
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 6153294244692542971}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &6153294244692542971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8043060795007636431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonUnityNetworking::Photon.Pun.PhotonTransformView
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!114 &2708026705655620959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4479,6 +4694,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26a14b9c180c553479ce0ac0a1b94a4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EquipmentLitterPicker
+  grabRadius: 0.4
+  holdPoint: {fileID: 3201041003608706074}
+  grabMask:
+    serializedVersion: 2
+    m_Bits: 64
+  smoothSpeed: 15
 --- !u!1 &8051737447986062203
 GameObject:
   m_ObjectHideFlags: 0
@@ -4525,7 +4746,8 @@ GameObject:
   - component: {fileID: 3548244805439746228}
   - component: {fileID: 4168699744631401483}
   - component: {fileID: 7674548359134962064}
-  - component: {fileID: 2537952751897619458}
+  - component: {fileID: 4001534218654850805}
+  - component: {fileID: 3297595954188155616}
   m_Layer: 7
   m_Name: Vacuum (Temp)
   m_TagString: Untagged
@@ -5605,11 +5827,28 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 1
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 4001534218654850805}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &2537952751897619458
+--- !u!114 &4001534218654850805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8089266064875731590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonUnityNetworking::Photon.Pun.PhotonTransformView
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
+--- !u!114 &3297595954188155616
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5621,6 +5860,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3699d08a1cf3fe4aa9a501140b6a1cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EquipmentVacuum
+  vacuumCenter: {fileID: 7592190734850667818}
+  vacuumRadius: 0.5
+  cleanRate: 0.5
+  dirtMask:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!1 &8244515632703379544
 GameObject:
   m_ObjectHideFlags: 0
@@ -5694,6 +5939,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6861566102642697143}
+  - component: {fileID: 8528372438237535169}
   m_Layer: 0
   m_Name: Equip Item Position
   m_TagString: Untagged
@@ -5718,6 +5964,22 @@ Transform:
   - {fileID: 6275278722609601389}
   m_Father: {fileID: 1048769243658271150}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8528372438237535169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8313649382564761488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonUnityNetworking::Photon.Pun.PhotonTransformView
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &8415643379576846881
 GameObject:
   m_ObjectHideFlags: 0

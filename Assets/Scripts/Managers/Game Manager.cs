@@ -5,21 +5,65 @@ using TMPro;
 
 public class GameManager : MonoBehaviourPun
 {
+    [Header("UI Elements")]
     public Image trashFillImage;
     public TMP_Text trashPercentageText;
 
+    [Header("Trash Settings")]
     public int maxTrashCount = 10;
     public int currentTrashCount = 0;
+
+    public static GameManager Instance;
+
+    void Awake()
+    {
+        if (Instance == null) Instance = this;
+    }
 
     void Start()
     {
         UpdateFill();
     }
 
+    public void TrashDumped()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC(nameof(RPC_IncrementTrashCounter), RpcTarget.AllBuffered);
+        }
+    }
+
+    public void OnDirtCleaned()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC(nameof(RPC_IncrementTrashCounter), RpcTarget.AllBuffered);
+        }
+    }
+
+
+    // Call this function for when the AI needs to hinder cleaning progress
+    // GameManager.Instance?.OnDirtAdded(); <- Use this line, no reference in your AI script needed
+    public void OnDirtAdded()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC(nameof(RPC_DecreaseTrashCounter), RpcTarget.AllBuffered);
+        }
+    }
+
     [PunRPC]
-    public void RPC_IncrementTrashCounter()
+    void RPC_IncrementTrashCounter()
     {
         currentTrashCount++;
+        currentTrashCount = Mathf.Clamp(currentTrashCount, 0, maxTrashCount);
+        UpdateFill();
+    }
+
+    [PunRPC]
+    void RPC_DecreaseTrashCounter()
+    {
+        currentTrashCount--;
         currentTrashCount = Mathf.Clamp(currentTrashCount, 0, maxTrashCount);
         UpdateFill();
     }
@@ -28,22 +72,13 @@ public class GameManager : MonoBehaviourPun
     {
         if (trashFillImage != null)
         {
-            float fillAmount = (float)currentTrashCount / maxTrashCount;
-            trashFillImage.fillAmount = fillAmount;
+            trashFillImage.fillAmount = (float)currentTrashCount / maxTrashCount;
         }
 
         if (trashPercentageText != null)
         {
             float percentage = ((float)currentTrashCount / maxTrashCount) * 100f;
             trashPercentageText.text = Mathf.RoundToInt(percentage) + "%";
-        }
-    }
-
-    public void TrashDumped()
-    {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            photonView.RPC("RPC_IncrementTrashCounter", RpcTarget.AllBuffered);
         }
     }
 }
