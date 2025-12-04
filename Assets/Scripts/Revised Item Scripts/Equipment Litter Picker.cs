@@ -70,6 +70,7 @@ public class EquipmentBGrabber : EquipmentBase
             grabbedPRV = grabbedRB.GetComponent<PhotonRigidbodyView>();
             if (grabbedPRV != null) grabbedPRV.enabled = false;
 
+            SoundManager.PlaySound(SoundType.LITTERPICKER);
             grabbedRB.isKinematic = true;
             grabbedPRV.gameObject.layer = LayerMask.NameToLayer("Grabbed");
 

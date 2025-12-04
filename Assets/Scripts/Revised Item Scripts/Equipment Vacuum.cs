@@ -20,6 +20,17 @@ public class EquipmentVacuum : EquipmentBase
     {
         if (!ownerView.IsMine) return;
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("VACUUM LOOP START");
+            SoundManager.PlayLoopingSound(SoundType.VACUUM, (float)0.8);
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            SoundManager.StopLoopingSound(SoundType.VACUUM);
+        }
+
         if (Input.GetMouseButton(0))
         {
             VacuumDirt();
@@ -47,12 +58,21 @@ public class EquipmentVacuum : EquipmentBase
 
     public override void DisableEquipment()
     {
+        // Stop vacuum sound immediately
+        SoundManager.StopLoopingSound(SoundType.VACUUM);
         base.DisableEquipment();
+    }
+
+    private void OnDestroy()
+    {
+        // Ensure sound stops if object is destroyed
+        SoundManager.StopLoopingSound(SoundType.VACUUM);
     }
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(vacuumCenter.position, vacuumRadius);
+        if (vacuumCenter != null)
+            Gizmos.DrawWireSphere(vacuumCenter.position, vacuumRadius);
     }
 }

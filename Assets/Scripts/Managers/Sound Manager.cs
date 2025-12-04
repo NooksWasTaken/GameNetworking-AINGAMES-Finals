@@ -4,8 +4,7 @@ using UnityEngine;
 public enum SoundType
 {
     WALK, RUN, JUMP, GRAB, DROP,
-    TRASH_ITEM, SWAP, VACUUM,
-    LITTERPICKER, BGM
+    TRASH_ITEM, SWAP, VACUUM, LITTERPICKER, BGM
 }
 
 [RequireComponent(typeof(AudioSource))]
@@ -17,18 +16,16 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip[] soundList;
 
     [Header("Audio Sources")]
-    [SerializeField] private AudioSource sfxSource;   // Short SFX
-    [SerializeField] private AudioSource loopSource;  // Looping sounds like WALK
-    [SerializeField] private AudioSource musicSource; // Optional background music
+    [SerializeField] private AudioSource sfxSource;    // Short SFX
+    [SerializeField] private AudioSource loopSource;   // Dedicated looping sound (can assign in inspector)
+    [SerializeField] private AudioSource musicSource;  // Optional background music
 
     private Dictionary<SoundType, AudioClip> clipDict;
+    private Dictionary<SoundType, AudioSource> loopSources = new Dictionary<SoundType, AudioSource>();
 
-    [Range(0f, 1f)]
-    public float sfxVolume = 1f;
-    [Range(0f, 1f)]
-    public float loopVolume = 1f;
-    [Range(0f, 1f)]
-    public float musicVolume = 1f;
+    [Range(0f, 1f)] public float sfxVolume = 1f;
+    [Range(0f, 1f)] public float loopVolume = 1f;
+    [Range(0f, 1f)] public float musicVolume = 1f;
 
     private void Awake()
     {
@@ -40,7 +37,6 @@ public class SoundManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // Setup AudioSources
         if (!sfxSource) sfxSource = gameObject.AddComponent<AudioSource>();
         if (!loopSource)
         {
@@ -55,7 +51,6 @@ public class SoundManager : MonoBehaviour
             musicSource.playOnAwake = false;
         }
 
-        // Build dictionary for faster lookup
         clipDict = new Dictionary<SoundType, AudioClip>();
         for (int i = 0; i < soundList.Length; i++)
         {
@@ -74,29 +69,48 @@ public class SoundManager : MonoBehaviour
         Instance.sfxSource.PlayOneShot(Instance.clipDict[sound], volume * Instance.sfxVolume);
     }
 
-    // --- STATIC LOOPING SOUND ---
-    public static void PlayLoopingSound(SoundType sound)
+    public static void PlayLoopingSound(SoundType sound, float volume)
     {
         if (Instance == null || !Instance.clipDict.ContainsKey(sound)) return;
 
-        AudioClip clip = Instance.clipDict[sound];
+        AudioSource src;
 
-        if (Instance.loopSource.clip != clip || !Instance.loopSource.isPlaying)
+        if (Instance.loopSource.clip == null)
         {
-            Instance.loopSource.clip = clip;
-            Instance.loopSource.volume = Instance.loopVolume;
-            Instance.loopSource.Play();
+            src = Instance.loopSource;
+        }
+        else if (!Instance.loopSources.ContainsKey(sound))
+        {
+            src = Instance.gameObject.AddComponent<AudioSource>();
+            src.loop = true;
+            Instance.loopSources[sound] = src;
+        }
+        else
+        {
+            src = Instance.loopSources[sound];
+        }
+
+        src.clip = Instance.clipDict[sound];
+        src.volume = Mathf.Clamp01(volume) * Instance.loopVolume;
+        if (!src.isPlaying) src.Play();
+    }
+
+
+    public static void StopLoopingSound(SoundType sound)
+    {
+        if (Instance == null) return;
+
+        if (Instance.loopSources.ContainsKey(sound))
+        {
+            AudioSource src = Instance.loopSources[sound];
+            if (src.isPlaying) src.Stop();
+        }
+        else if (Instance.loopSource.clip != null && Instance.loopSource.clip == Instance.clipDict[sound])
+        {
+            Instance.loopSource.Stop();
         }
     }
 
-    public static void StopLoopingSound()
-    {
-        if (Instance != null && Instance.loopSource.isPlaying)
-            Instance.loopSource.Stop();
-    }
-
-
-    // --- MUSIC CONTROL ---
     public void PlayMusic(SoundType sound)
     {
         if (!clipDict.ContainsKey(sound)) return;
@@ -107,21 +121,18 @@ public class SoundManager : MonoBehaviour
 
     public void StopMusic()
     {
-        if (musicSource.isPlaying)
-            musicSource.Stop();
+        if (musicSource.isPlaying) musicSource.Stop();
     }
 
-    // --- VOLUME CONTROLS ---
-    public void SetSFXVolume(float volume) 
-    { 
-        sfxSource.volume = Mathf.Clamp01(volume); 
+    public void SetSFXVolume(float volume) { sfxSource.volume = Mathf.Clamp01(volume); }
+
+    public void SetLoopVolume(float volume)
+    {
+        loopVolume = Mathf.Clamp01(volume);
+        loopSource.volume = loopVolume;
+        foreach (var src in loopSources.Values)
+            src.volume = loopVolume;
     }
-    public void SetLoopVolume(float volume) 
-    { 
-        loopSource.volume = Mathf.Clamp01(volume); 
-    }
-    public void SetMusicVolume(float volume) 
-    { 
-        musicSource.volume = Mathf.Clamp01(volume); 
-    }
+
+    public void SetMusicVolume(float volume) { musicSource.volume = Mathf.Clamp01(volume); }
 }

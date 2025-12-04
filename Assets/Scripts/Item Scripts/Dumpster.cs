@@ -86,6 +86,7 @@ public class Dumpster : MonoBehaviourPun
     {
         if (smokeEffectPrefab != null)
         {
+            SoundManager.PlaySound(SoundType.TRASH_ITEM);
             GameObject smoke = Instantiate(smokeEffectPrefab, position, Quaternion.identity);
             Destroy(smoke, smokeLifetime);
         }

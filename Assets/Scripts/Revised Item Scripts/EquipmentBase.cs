@@ -7,6 +7,7 @@ public abstract class EquipmentBase : MonoBehaviour
     public virtual void EnableEquipment()
     {
         isEquipped = true;
+        SoundManager.PlaySound(SoundType.SWAP);
         gameObject.SetActive(true);
     }
 

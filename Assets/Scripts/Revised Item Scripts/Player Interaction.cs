@@ -41,6 +41,7 @@ public class PlayerInteraction : MonoBehaviourPun
                 if (Input.GetKeyDown(KeyCode.E) && !heldItem)
                 {
                     TryPickup();
+                    SoundManager.PlaySound(SoundType.GRAB);
                     GrabIcon.enabled = false;
                     HoldingIcon.enabled = true;
                 }
@@ -84,6 +85,7 @@ public class PlayerInteraction : MonoBehaviourPun
             if (heldItem)
             {
                 heldItem.Drop();
+                SoundManager.PlaySound(SoundType.DROP);
                 HoldingIcon.enabled = false;
                 defaultCrosshair.enabled = true;
                 heldItem = null;
