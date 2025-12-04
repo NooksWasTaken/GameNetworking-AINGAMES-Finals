@@ -137,8 +137,8 @@ MonoBehaviour:
   trashLayer:
     serializedVersion: 2
     m_Bits: 64
-  fleeDistance: 3
-  fleeStrength: 5
+  fleeDistance: 1
+  fleeStrength: 10
 --- !u!114 &-8471046896635934411
 MonoBehaviour:
   m_ObjectHideFlags: 0
