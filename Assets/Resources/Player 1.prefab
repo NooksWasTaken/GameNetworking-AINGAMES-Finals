@@ -1284,6 +1284,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipment
   equipmentA: {fileID: 2537952751897619458}
   equipmentB: {fileID: 2708026705655620959}
+  currentState: 3
 --- !u!1 &2459369691069558545
 GameObject:
   m_ObjectHideFlags: 0
