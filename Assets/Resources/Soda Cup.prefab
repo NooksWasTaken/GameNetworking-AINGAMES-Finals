@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 3645852165470007935}
   - component: {fileID: 5836686222156028439}
   - component: {fileID: 2175376566483798661}
+  - component: {fileID: -1736585764553718710}
   m_Layer: 6
   m_Name: Soda Cup
   m_TagString: Untagged
@@ -227,3 +228,19 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!208 &-1736585764553718710
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7108066494668677329}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.108, y: 0.22500001, z: 0.101}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.068, z: 0.007}
+  m_TimeToStationary: 0.5

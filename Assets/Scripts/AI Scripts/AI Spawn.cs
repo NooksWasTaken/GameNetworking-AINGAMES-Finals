@@ -9,7 +9,10 @@ public class AISpawn : MonoBehaviourPun
     [Header("AI Spawning")]
     public string AI;
     public Transform[] spawnpoint;
-    public int AIcount = 0;
+    public int AIcount;
+    public int milestone = 0;
+
+    public GameManager gameManager;
 
 
     void Start()
@@ -21,27 +24,31 @@ public class AISpawn : MonoBehaviourPun
         // Only Master Client calls the RPC
         if (PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC("SpawnAI", RpcTarget.AllBuffered);
+            if (gameManager.currentTrashCount == milestone)
+            {
+                photonView.RPC("SpawnAI", RpcTarget.AllBuffered);
+                milestone += 10;
+            }
         }
     }
 
     [PunRPC]
     void SpawnAI()
     {
-
         // Only Master Client should instantiate
         if (PhotonNetwork.IsMasterClient)
         {
-
-            int index = Random.Range(0, spawnpoint.Length);
-            Transform point = spawnpoint[index];
-
-            if (AIcount != 3)
+            AIcount = 0;
+            do
             {
+                int index = Random.Range(0, spawnpoint.Length);
+                Transform point = spawnpoint[index];
+
                 PhotonNetwork.Instantiate(AI, point.position, point.rotation);
                 Debug.Log("Success");
                 ++AIcount;
             }
+            while (AIcount != 3);
         }
 
 
