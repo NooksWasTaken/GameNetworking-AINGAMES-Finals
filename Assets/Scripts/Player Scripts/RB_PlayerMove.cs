@@ -80,6 +80,16 @@ public class RB_PlayerMove : MonoBehaviour
             animator.SetBool("IsGrounded", isGrounded);
         }
 
+        if (animator && isGrounded && input.magnitude > 0.1f)
+        {
+            SoundManager.PlayLoopingSound(SoundType.WALK);
+        }
+        else
+        {
+            SoundManager.StopLoopingSound();
+        }
+
+
         // rotate model based on motion
         if (modelRoot && rb.linearVelocity.sqrMagnitude > 0.1f)
         {
