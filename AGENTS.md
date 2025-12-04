@@ -2,7 +2,7 @@
 - Project name: GameNetworking-AINGAMES-Finals
 - Unity version: Unity 6000.2.12f1
 - Active game object:
-  - Name: Road
-  - Tag: Untagged
-  - Layer: Ground
+  - Name: Player 1(Clone)
+  - Tag: Player
+  - Layer: Player_
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
