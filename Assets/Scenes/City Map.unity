@@ -15,17 +15,17 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 0.40890706, g: 0.7324442, b: 0.9547169, a: 1}
-  m_FogMode: 3
-  m_FogDensity: 0.004
+  m_FogColor: {r: 0.6456034, g: 0.72217184, b: 0.8490566, a: 1}
+  m_FogMode: 2
+  m_FogDensity: 0.003
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
+  m_AmbientIntensity: 1.5
   m_AmbientMode: 0
-  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
+  m_SubtractiveShadowColor: {r: 0.33346385, g: 0.3939466, b: 0.5471698, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 2bd8959f5fbd3644aa33af1a155fc147, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
@@ -21971,7 +21971,7 @@ Light:
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
-  m_ColorTemperature: 6822
+  m_ColorTemperature: 10811
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
@@ -111201,10 +111201,10 @@ SceneRoots:
   - {fileID: 524257593}
   - {fileID: 1966228692}
   - {fileID: 2007080366}
+  - {fileID: 704495744}
   - {fileID: 4768184}
   - {fileID: 2054918298}
   - {fileID: 1035110952}
   - {fileID: 2065889900}
   - {fileID: 1815344410}
   - {fileID: 825043625}
-  - {fileID: 704495744}
