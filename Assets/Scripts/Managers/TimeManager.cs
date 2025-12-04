@@ -7,15 +7,18 @@ using TMPro;
 public class TimeManager : MonoBehaviourPunCallbacks
 {
     [Header("Timer Settings")]
-    public float countdownDuration = 60f; // seconds
+    public float countdownDuration = 60f;
     [Tooltip("Delay before the timer starts (seconds)")]
     public float startDelay = 5f;
     public TextMeshProUGUI timerText;
 
+    [Header("Game Over Screen")]
+    public GameObject GameOverScreen;
 
     private const string ROOM_START_TIME_KEY = "StartTime";
     private float remainingTime;
     private bool timerStarted = false;
+    private bool gameOverTriggered = false;
 
     public override void OnJoinedRoom()
     {
@@ -47,14 +50,27 @@ public class TimeManager : MonoBehaviourPunCallbacks
         if (elapsedSinceStart >= 0f)
         {
             timerStarted = true;
-            SoundManager.PlayLoopingSound(SoundType.BGM, (float)0.5);
             remainingTime = Mathf.Max(0f, countdownDuration - elapsedSinceStart);
 
+            // Play BGM with adjustable volume
+            SoundManager.PlayLoopingSound(SoundType.BGM, 0.5f);
+
+            // Update timer text
             if (timerText != null)
             {
                 int minutes = Mathf.FloorToInt(remainingTime / 60f);
                 int seconds = Mathf.FloorToInt(remainingTime % 60f);
                 timerText.text = $"{minutes:00}:{seconds:00}";
+            }
+
+            // Trigger game over when timer reaches 0 (once)
+            if (remainingTime <= 0f && !gameOverTriggered)
+            {
+                gameOverTriggered = true;
+
+                // Only the master client sends the RPC
+                if (PhotonNetwork.IsMasterClient)
+                    photonView.RPC("RPC_GameOver", RpcTarget.All);
             }
         }
         else
@@ -80,5 +96,18 @@ public class TimeManager : MonoBehaviourPunCallbacks
     public bool IsTimerFinished()
     {
         return timerStarted && remainingTime <= 0f;
+    }
+
+    [PunRPC]
+    private void RPC_GameOver()
+    {
+        if (GameOverScreen != null)
+            GameOverScreen.SetActive(true);
+
+        RB_PlayerMove[] players = GameObject.FindObjectsByType<RB_PlayerMove>(FindObjectsSortMode.None);
+        foreach (var player in players)
+            player.enabled = false;
+
+        SoundManager.StopLoopingSound(SoundType.BGM);
     }
 }

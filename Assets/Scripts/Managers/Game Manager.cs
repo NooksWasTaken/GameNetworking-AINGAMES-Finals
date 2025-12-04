@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviourPun
     public int maxTrashCount = 10;
     public int currentTrashCount = 0;
 
+    [Header("Win Screen")]
+    public GameObject WinScreen;
+
     public static GameManager Instance;
 
     void Awake()
@@ -73,6 +76,11 @@ public class GameManager : MonoBehaviourPun
         if (trashFillImage != null)
         {
             trashFillImage.fillAmount = (float)currentTrashCount / maxTrashCount;
+
+        if (trashFillImage.fillAmount >= 1f && WinScreen != null)
+            {
+                WinScreen.SetActive(true);
+            }
         }
 
         if (trashPercentageText != null)
@@ -81,4 +89,5 @@ public class GameManager : MonoBehaviourPun
             trashPercentageText.text = Mathf.RoundToInt(percentage) + "%";
         }
     }
+
 }
