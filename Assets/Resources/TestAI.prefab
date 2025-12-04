@@ -133,9 +133,9 @@ MonoBehaviour:
   groundlayer:
     serializedVersion: 2
     m_Bits: 4096
-  minWait: 1
-  maxWait: 3
-  range: 20
+  minWait: 0
+  maxWait: 2
+  range: 50
   trashLayer:
     serializedVersion: 2
     m_Bits: 64
