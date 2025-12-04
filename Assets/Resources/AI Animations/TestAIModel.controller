@@ -17,11 +17,11 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.1
+  m_TransitionDuration: 0.10000002
   m_TransitionOffset: 0
-  m_ExitTime: 0.1
+  m_ExitTime: 0.09999993
   m_HasExitTime: 1
-  m_HasFixedDuration: 1
+  m_HasFixedDuration: 0
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
@@ -34,7 +34,7 @@ AnimatorState:
   m_PrefabAsset: {fileID: 0}
   m_Name: Walking animation
   m_Speed: 1
-  m_CycleOffset: 0
+  m_CycleOffset: 1
   m_Transitions:
   - {fileID: -5938694258211985256}
   m_StateMachineBehaviours: []
@@ -60,8 +60,8 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Idle animation
-  m_Speed: 1
-  m_CycleOffset: 0
+  m_Speed: 5
+  m_CycleOffset: 1
   m_Transitions:
   - {fileID: 4015865124246870698}
   m_StateMachineBehaviours: []
@@ -90,10 +90,10 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -1918259595671215415}
-    m_Position: {x: 300, y: 110, z: 0}
+    m_Position: {x: 260, y: 120, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3632609864110302498}
-    m_Position: {x: 300, y: 220, z: 0}
+    m_Position: {x: 260, y: 230, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -155,11 +155,11 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
-  m_TransitionOffset: 0
-  m_ExitTime: 0.1
+  m_TransitionDuration: 0.051422007
+  m_TransitionOffset: 0.0007103956
+  m_ExitTime: 0.048578
   m_HasExitTime: 1
-  m_HasFixedDuration: 1
+  m_HasFixedDuration: 0
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
