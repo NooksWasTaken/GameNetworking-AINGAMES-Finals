@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7460559121898653788}
   - component: {fileID: 7354214398499837542}
   - component: {fileID: 6221121755253452024}
+  - component: {fileID: -8471046896635934411}
   - component: {fileID: 1953498350348688133}
   - component: {fileID: -929594849336193103}
   - component: {fileID: -2085122921332901113}
@@ -133,6 +134,30 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   range: 20
+  trashLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  fleeDistance: 3
+  fleeStrength: 5
+--- !u!114 &-8471046896635934411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 674002284571026363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccefb6381f59d174f9f61628fd0594d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AITrashAvoidance
+  forwardCheck: 3
+  sideCheck: 3
+  sideOffset: 1
+  turnStrength: 4
+  trashLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!195 &1953498350348688133
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -153,7 +178,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 1
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
 --- !u!114 &-929594849336193103
 MonoBehaviour:

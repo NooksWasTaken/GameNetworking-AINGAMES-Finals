@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 6358003512441530669}
   - component: {fileID: 6132078433225423625}
   - component: {fileID: 3633693337272968631}
+  - component: {fileID: -4970645319654033586}
   m_Layer: 6
   m_Name: Crushed Soda Can
   m_TagString: Untagged
@@ -227,3 +228,19 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!208 &-4970645319654033586
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4214934118908312599}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.116000004, y: 0.07700001, z: 0.123}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: -0.001, z: 0.011000001}
+  m_TimeToStationary: 0.5
