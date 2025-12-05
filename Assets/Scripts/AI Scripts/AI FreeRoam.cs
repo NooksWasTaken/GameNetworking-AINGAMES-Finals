@@ -4,7 +4,6 @@ using UnityEngine;
 using Photon.Pun;
 using UnityEngine.AI;
 using System.Threading;
-using BehaviorDesigner.Runtime.Tasks.Unity.UnityGameObject;
 
 public class AIFreeRoam : MonoBehaviourPun
 {

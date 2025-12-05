@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviourPun
                 WinScreen.SetActive(true);
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    photonView.RPC("RPC_GameOver", RpcTarget.All);
+                    photonView.RPC("RPC_GameWin", RpcTarget.All);
                 }
                     
             }
@@ -96,12 +96,14 @@ public class GameManager : MonoBehaviourPun
     }
 
     [PunRPC]
-    private void RPC_GameOver()
+    private void RPC_GameWin()
     {
         RB_PlayerMove[] players = GameObject.FindObjectsByType<RB_PlayerMove>(FindObjectsSortMode.None);
 
         foreach (var player in players)
             player.enabled = false;
+
+        Time.timeScale = 0f;
 
         SoundManager.StopLoopingSound(SoundType.BGM);
     }
