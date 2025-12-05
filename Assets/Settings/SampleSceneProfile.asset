@@ -18,10 +18,10 @@ MonoBehaviour:
     m_Value: 0
   threshold:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.8
   intensity:
     m_OverrideState: 1
-    m_Value: 0.25
+    m_Value: 0.5
   scatter:
     m_OverrideState: 1
     m_Value: 0.5
@@ -108,7 +108,7 @@ MonoBehaviour:
   active: 1
   mode:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 2
   neutralHDRRangeReductionMode:
     m_OverrideState: 0
     m_Value: 2
@@ -147,8 +147,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: com.cqf.urpvolumetricfog.runtime::VolumetricFogVolumeComponent
   active: 1
   distance:
-    m_OverrideState: 0
-    m_Value: 64
+    m_OverrideState: 1
+    m_Value: 15
   baseHeight:
     m_OverrideState: 1
     m_Value: 0
@@ -163,7 +163,7 @@ MonoBehaviour:
     m_Value: 0
   density:
     m_OverrideState: 0
-    m_Value: 0.2
+    m_Value: 0
   attenuationDistance:
     m_OverrideState: 0
     m_Value: 128
@@ -175,28 +175,28 @@ MonoBehaviour:
     m_Value: 1
   enableMainLightContribution:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   anisotropy:
-    m_OverrideState: 0
-    m_Value: 0.4
+    m_OverrideState: 1
+    m_Value: -0.09
   scattering:
-    m_OverrideState: 0
-    m_Value: 0.15
+    m_OverrideState: 1
+    m_Value: 0.83
   tint:
-    m_OverrideState: 0
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    m_OverrideState: 1
+    m_Value: {r: 0.898113, g: 0.6941744, b: 0.4931148, a: 1}
   enableAdditionalLightsContribution:
     m_OverrideState: 1
     m_Value: 0
   maxSteps:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 128
   blurIterations:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 2
   enabled:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   renderPassEvent:
     m_OverrideState: 0
     m_Value: 550
