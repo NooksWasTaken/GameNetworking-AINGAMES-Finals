@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using Photon.Pun;
 
@@ -43,7 +44,7 @@ public class Dumpster : MonoBehaviourPun
 
             if (PhotonNetwork.IsMasterClient)
             {
-                HandleTrashDestruction(trash);
+                StartCoroutine(DestroyTrashSafely(trash));
             }
             else
             {
@@ -52,16 +53,23 @@ public class Dumpster : MonoBehaviourPun
         }
     }
 
-    void HandleTrashDestruction(Trash trash)
+    private IEnumerator DestroyTrashSafely(Trash trash)
     {
-        if (trash == null || trash.photonView == null) return;
+        if (trash == null || trash.photonView == null) yield break;
 
-        // prevent double destruction
-        if (PhotonView.Find(trash.photonView.ViewID) == null) return;
+        PhotonView targetView = trash.photonView;
+        if (!targetView.IsMine)
+        {
+            targetView.TransferOwnership(PhotonNetwork.LocalPlayer);
+            yield return null;
+        }
+
+        Collider col = trash.GetComponent<Collider>();
+        if (col != null) col.enabled = false;
 
         Vector3 position = trash.transform.position;
 
-        PhotonNetwork.Destroy(trash.gameObject);
+        PhotonNetwork.Destroy(targetView.gameObject);
 
         GameManager gm = FindFirstObjectByType<GameManager>();
         gm?.TrashDumped();
@@ -80,7 +88,7 @@ public class Dumpster : MonoBehaviourPun
         Trash trash = targetView.GetComponent<Trash>();
         if (trash != null)
         {
-            HandleTrashDestruction(trash);
+            StartCoroutine(DestroyTrashSafely(trash));
         }
     }
 
@@ -93,5 +101,12 @@ public class Dumpster : MonoBehaviourPun
             GameObject smoke = Instantiate(smokeEffectPrefab, position, Quaternion.identity);
             Destroy(smoke, smokeLifetime);
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (boxCollider == null) return;
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(boxCollider.bounds.center, boxCollider.bounds.size);
     }
 }
