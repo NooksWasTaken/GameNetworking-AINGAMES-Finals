@@ -17,7 +17,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.10000002
+  m_TransitionDuration: 0.05
   m_TransitionOffset: 0
   m_ExitTime: 0.09999993
   m_HasExitTime: 1
@@ -33,7 +33,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Walking animation
-  m_Speed: 1
+  m_Speed: 1.2
   m_CycleOffset: 1
   m_Transitions:
   - {fileID: -5938694258211985256}
@@ -60,7 +60,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Idle animation
-  m_Speed: 5
+  m_Speed: 10
   m_CycleOffset: 1
   m_Transitions:
   - {fileID: 4015865124246870698}
@@ -155,7 +155,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.051422007
+  m_TransitionDuration: 0.025
   m_TransitionOffset: 0.0007103956
   m_ExitTime: 0.048578
   m_HasExitTime: 1
