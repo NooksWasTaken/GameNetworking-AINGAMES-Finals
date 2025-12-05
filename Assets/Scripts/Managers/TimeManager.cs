@@ -1,113 +1,145 @@
 using UnityEngine;
 using Photon.Pun;
-using Photon.Realtime;
-using ExitGames.Client.Photon;
 using TMPro;
 
 public class TimeManager : MonoBehaviourPunCallbacks
 {
     [Header("Timer Settings")]
     public float countdownDuration = 60f;
-    [Tooltip("Delay before the timer starts (seconds)")]
-    public float startDelay = 5f;
+    public float preMatchCountdown = 5f;
     public TextMeshProUGUI timerText;
 
-    [Header("Game Over Screen")]
+    [Header("Game Over")]
     public GameObject GameOverScreen;
 
-    private const string ROOM_START_TIME_KEY = "StartTime";
-    private float remainingTime;
-    private bool timerStarted = false;
+    private double startTime;
+    private float currentTime;
+    private bool timerRunning = false;
+    private bool preMatchRunning = false;
+    private bool bgmPlaying = false;
     private bool gameOverTriggered = false;
 
-    public override void OnJoinedRoom()
+    private bool timerInitialized = false;
+
+    void Awake()
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (timerText != null)
+            timerText.text = "";
+
+        if (GameOverScreen != null)
+            GameOverScreen.SetActive(false);
+    }
+
+    void Start()
+    {
+        // If the player is already in a room when this scene loads
+        if (PhotonNetwork.InRoom)
         {
-            // Master schedules timer start
-            float startTime = (float)PhotonNetwork.Time + startDelay;
-            ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { ROOM_START_TIME_KEY, startTime } };
-            PhotonNetwork.CurrentRoom.SetCustomProperties(props);
-        }
-        else
-        {
-            // Non-master players check if start time already exists
-            if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ROOM_START_TIME_KEY))
-            {
-                float startTime = (float)PhotonNetwork.CurrentRoom.CustomProperties[ROOM_START_TIME_KEY];
-                timerStarted = PhotonNetwork.Time >= startTime;
-            }
+            TryInitializeTimer();
         }
     }
 
     void Update()
     {
-        if (!PhotonNetwork.InRoom || !PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(ROOM_START_TIME_KEY)) return;
-
-        float startTime = (float)PhotonNetwork.CurrentRoom.CustomProperties[ROOM_START_TIME_KEY];
-        float elapsedSinceStart = (float)PhotonNetwork.Time - startTime;
-
-        if (elapsedSinceStart >= 0f)
+        if (preMatchRunning)
         {
-            timerStarted = true;
-            remainingTime = Mathf.Max(0f, countdownDuration - elapsedSinceStart);
+            double elapsedPre = PhotonNetwork.Time - startTime;
+            float remainingPre = Mathf.Max(0f, preMatchCountdown - (float)elapsedPre);
 
-            // Play BGM with adjustable volume
-            SoundManager.PlayLoopingSound(SoundType.BGM, 0.5f);
+            if (timerText != null)
+                timerText.text = $"Starting in: {Mathf.CeilToInt(remainingPre)}";
 
-            // Update timer text
+            if (remainingPre <= 0f)
+            {
+                preMatchRunning = false;
+                StartMainTimer();
+            }
+        }
+
+        if (timerRunning)
+        {
+            double elapsed = PhotonNetwork.Time - startTime - preMatchCountdown;
+            currentTime = Mathf.Max(0f, countdownDuration - (float)elapsed);
+
             if (timerText != null)
             {
-                int minutes = Mathf.FloorToInt(remainingTime / 60f);
-                int seconds = Mathf.FloorToInt(remainingTime % 60f);
+                int minutes = Mathf.FloorToInt(currentTime / 60f);
+                int seconds = Mathf.FloorToInt(currentTime % 60f);
                 timerText.text = $"{minutes:00}:{seconds:00}";
             }
 
-            // Trigger game over when timer reaches 0 (once)
-            if (remainingTime <= 0f && !gameOverTriggered)
+            if (!bgmPlaying)
+            {
+                SoundManager.PlayLoopingSound(SoundType.BGM, 0.5f);
+                bgmPlaying = true;
+            }
+
+            if (currentTime <= 0 && !gameOverTriggered)
             {
                 gameOverTriggered = true;
-
-                // Only the master client sends the RPC
                 if (PhotonNetwork.IsMasterClient)
-                    photonView.RPC("RPC_GameOver", RpcTarget.All);
-            }
-        }
-        else
-        {
-            // Timer hasn't started yet, show countdown to start
-            if (timerText != null)
-            {
-                int secondsUntilStart = Mathf.CeilToInt(-elapsedSinceStart);
-                timerText.text = $"Starting in: {secondsUntilStart}";
+                    photonView.RPC(nameof(RPC_GameOver), RpcTarget.AllBuffered);
             }
         }
     }
 
-    public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
+    public override void OnJoinedRoom()
     {
-        if (propertiesThatChanged.ContainsKey(ROOM_START_TIME_KEY))
-        {
-            float startTime = (float)propertiesThatChanged[ROOM_START_TIME_KEY];
-            timerStarted = PhotonNetwork.Time >= startTime;
-        }
+        TryInitializeTimer();
     }
 
-    public bool IsTimerFinished()
+    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
-        return timerStarted && remainingTime <= 0f;
+        TryInitializeTimer();
+    }
+
+    private void TryInitializeTimer()
+    {
+        if (!timerInitialized && PhotonNetwork.IsMasterClient)
+        {
+            timerInitialized = true;
+            double networkTime = PhotonNetwork.Time + 0.1; // small offset to ensure full join
+            photonView.RPC(nameof(RPC_StartTimer), RpcTarget.AllBuffered, networkTime);
+        }
     }
 
     [PunRPC]
-    private void RPC_GameOver()
+    void RPC_StartTimer(double networkTimeFromMaster)
     {
+        startTime = networkTimeFromMaster;
+        preMatchRunning = true;
+        timerRunning = false;
+        bgmPlaying = false;
+        gameOverTriggered = false;
+
+        if (GameOverScreen != null)
+            GameOverScreen.SetActive(false);
+    }
+
+    private void StartMainTimer()
+    {
+        timerRunning = true;
+        currentTime = countdownDuration;
+    }
+
+    [PunRPC]
+    void RPC_GameOver()
+    {
+        timerRunning = false;
+        preMatchRunning = false;
+
+        Time.timeScale = 0f;
+
         if (GameOverScreen != null)
             GameOverScreen.SetActive(true);
 
-        RB_PlayerMove[] players = GameObject.FindObjectsByType<RB_PlayerMove>(FindObjectsSortMode.None);
-        foreach (var player in players)
-            player.enabled = false;
-
         SoundManager.StopLoopingSound(SoundType.BGM);
+        SoundManager.StopLoopingSound(SoundType.WALK);
+        SoundManager.StopLoopingSound(SoundType.RUN);
+
+        var players = GameObject.FindObjectsByType<RB_PlayerMove>(FindObjectsSortMode.None);
+        foreach (var p in players)
+            p.gameObject.SetActive(false);
+        Debug.Log("Disabled Player!");
     }
 }

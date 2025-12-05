@@ -1,50 +1,53 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class RoomManager : MonoBehaviourPunCallbacks
 {
-    public GameObject player;
-    public Transform spawn;
+    [Header("Player Spawn Settings")]
+    public GameObject playerPrefab;
+    public Transform spawnPoint;
 
-    void Start()
+    private void Awake()
     {
-        Debug.Log("Connecting...");
-
-        // connects to master server using the settings from Photon Server Settings
-        // (Assets > Photon > PhotonUnityNetworking > Resources)
-        PhotonNetwork.ConnectUsingSettings(); 
-    }
-
-    public override void OnConnectedToMaster()
-    {
-        base.OnConnectedToMaster();
-
-        Debug.Log("Connected to server!");
-
-        PhotonNetwork.JoinLobby();
-    }
-
-    public override void OnJoinedLobby()
-    {
-        base.OnJoinedLobby();
-
-        // joins a specific room by name or creates it on demand
-        // parameters needed are: name, roomOptions, typedLobby.
-        // leaving the last 2 as null is fine for now probably
-        PhotonNetwork.JoinOrCreateRoom("Placeholder", null, null);
-
-        Debug.Log("Succesfully joined a lobby!");
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     public override void OnJoinedRoom()
     {
-        base.OnJoinedRoom();
+        Debug.Log("Joined room: " + PhotonNetwork.CurrentRoom.Name);
 
-        Debug.Log("Succesfully joined a room!");
+        if (PhotonNetwork.IsMasterClient)
+        {
+            string sceneToLoad = PlayerPrefs.GetString("RoomSceneToLoad", "");
 
-        // instantiate a new player upon joining a room
-        GameObject _player = PhotonNetwork.Instantiate(player.name, spawn.position, Quaternion.identity);
+            if (!string.IsNullOrEmpty(sceneToLoad))
+            {
+                Debug.Log("MasterClient loading scene: " + sceneToLoad);
+                PhotonNetwork.LoadLevel(sceneToLoad);
+            }
+            else
+            {
+                Debug.LogError("No scene stored from MenuRoomController!");
+            }
+        }
+    }
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        Debug.LogError("Join room failed: " + message);
+    }
+
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        Debug.LogError("Create room failed: " + message);
+    }
+
+    void Start()
+    {
+        if (PhotonNetwork.InRoom && playerPrefab != null && spawnPoint != null)
+        {
+            PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, spawnPoint.rotation);
+        }
     }
 }

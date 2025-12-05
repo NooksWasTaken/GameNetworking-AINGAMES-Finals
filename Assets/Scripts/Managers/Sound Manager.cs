@@ -4,7 +4,7 @@ using UnityEngine;
 public enum SoundType
 {
     WALK, RUN, JUMP, GRAB, DROP,
-    TRASH_ITEM, SWAP, VACUUM, LITTERPICKER, BGM
+    TRASH_ITEM, SWAP, VACUUM, LITTERPICKER, BGM, BGM2
 }
 
 [RequireComponent(typeof(AudioSource))]

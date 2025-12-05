@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviourPun
         RB_PlayerMove[] players = GameObject.FindObjectsByType<RB_PlayerMove>(FindObjectsSortMode.None);
 
         foreach (var player in players)
-            player.enabled = false;
+            player.gameObject.SetActive(false);
 
         Time.timeScale = 0f;
 

@@ -77561,8 +77561,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55c89f3725acd1d46b4fa630caa4d442, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SyncedCountdownTimer
-  countdownDuration: 300
-  startDelay: 5
+  countdownDuration: 180
+  preMatchCountdown: 10
   timerText: {fileID: 1387394107}
   GameOverScreen: {fileID: 1369150630}
 --- !u!1001 &1182531301
@@ -79275,7 +79275,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1224438611
 RectTransform:
   m_ObjectHideFlags: 0
@@ -87588,7 +87588,7 @@ GameObject:
   - component: {fileID: 1387394108}
   - component: {fileID: 1387394107}
   m_Layer: 0
-  m_Name: Timer
+  m_Name: Timer Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117603,8 +117603,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d9e3d682f5892e48aa1df16737f26fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomManager
-  player: {fileID: 2363065445299639129, guid: cda962041fe6e4e4d9c47651eec10d8e, type: 3}
-  spawn: {fileID: 2007080366}
+  playerPrefab: {fileID: 2363065445299639129, guid: cda962041fe6e4e4d9c47651eec10d8e, type: 3}
+  spawnPoint: {fileID: 2007080366}
 --- !u!1 &1900574083 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 159082, guid: cc10ce20cd2faea4ca8cb6505e5861d5, type: 3}
@@ -124229,7 +124229,7 @@ Transform:
   m_GameObject: {fileID: 2007080365}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -46.42, y: 2.53, z: -73.72}
+  m_LocalPosition: {x: -63.26, y: 2.11, z: -73.72}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
