@@ -32,6 +32,7 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.ConnectUsingSettings(); //connects to the photon server
         offlineButton.gameObject.SetActive(true); //displays offline if we are not connected to the server
+        SoundManager.PlayLoopingSound(SoundType.BGM2, 1);
     }
 
     public override void OnConnectedToMaster()
