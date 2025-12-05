@@ -2,7 +2,7 @@
 - Project name: GameNetworking-AINGAMES-Finals
 - Unity version: Unity 6000.2.12f1
 - Active game object:
-  - Name: Room Manager
+  - Name: Join BTN
   - Tag: Untagged
   - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
