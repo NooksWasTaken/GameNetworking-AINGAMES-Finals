@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviourPun
 
         if (trashFillImage.fillAmount >= 1f && WinScreen != null)
             {
-                progressCanvas.SetActive(false);
+                progressCanvas.SetActive(false)
                 WinScreen.SetActive(true);
                 screenCamera.SetActive(true);
                 Cursor.visible = true;
@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviourPun
         RB_PlayerMove[] players = GameObject.FindObjectsByType<RB_PlayerMove>(FindObjectsSortMode.None);
 
         foreach (var player in players)
-            player.enabled = false; ;
+            player.gameObject.SetActive(false);
 
         Time.timeScale = 0f;
 

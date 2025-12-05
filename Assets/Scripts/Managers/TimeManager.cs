@@ -154,7 +154,7 @@ public class TimeManager : MonoBehaviourPunCallbacks
 
         var players = GameObject.FindObjectsByType<RB_PlayerMove>(FindObjectsSortMode.None);
         foreach (var p in players)
-            p.enabled = false;
+            p.gameObject.SetActive(false);
         Debug.Log("Disabled Player!");
     }
 }
