@@ -1,6 +1,5 @@
 using UnityEngine;
 using Photon.Pun;
-using Photon.Realtime;
 using System.Collections;
 
 public class PlayerSpawner : MonoBehaviourPunCallbacks
@@ -13,15 +12,25 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
 
     private GameObject localPlayerInstance;
 
-    void Start()
+    public override void OnEnable()
     {
-        if (!PhotonNetwork.IsConnected)
-            Debug.LogWarning("Not connected yet.");
+        PhotonNetwork.AutomaticallySyncScene = true;
+
+        if (PhotonNetwork.InRoom)
+        {
+            TrySpawnPlayer();
+        }
+
+        PhotonNetwork.AddCallbackTarget(this);
+    }
+
+    public override void OnDisable()
+    {
+        PhotonNetwork.RemoveCallbackTarget(this);
     }
 
     public override void OnJoinedRoom()
     {
-        Debug.Log("Joined room, checking if player exists...");
         TrySpawnPlayer();
     }
 
@@ -58,7 +67,11 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
 
         Transform spawnLocation = GetSpawnLocation();
 
-        GameObject player = PhotonNetwork.Instantiate(playerPrefab.name, spawnLocation.position, spawnLocation.rotation);
+        GameObject player = PhotonNetwork.Instantiate(
+            playerPrefab.name,
+            spawnLocation.position,
+            spawnLocation.rotation
+        );
 
         PhotonNetwork.LocalPlayer.TagObject = player;
         localPlayerInstance = player;
@@ -74,42 +87,16 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
 
         if (playerObj == null)
         {
-            Debug.Log("Player object missing after scene load, respawning...");
             SpawnPlayer();
             yield break;
         }
 
-        if (spawnPoints != null && spawnPoints.Length > 0)
-        {
-            Transform spawnLocation = GetSpawnLocation();
-
-            playerObj.transform.position = spawnLocation.position;
-            playerObj.transform.rotation = spawnLocation.rotation;
-
-            Debug.Log($"Reset Player to spawn point {spawnLocation.name}");
-        }
-        else
-        {
-            Debug.LogWarning("No spawn points found in this scene to reset position.");
-        }
+        Transform spawnLocation = GetSpawnLocation();
+        playerObj.transform.SetPositionAndRotation(spawnLocation.position, spawnLocation.rotation);
     }
 
     Transform GetSpawnLocation()
     {
-        if (spawnPoints == null || spawnPoints.Length == 0)
-            return transform;
-
-        return spawnPoints[Random.Range(0, spawnPoints.Length)];
-    }
-
-    public override void OnEnable()
-    {
-        PhotonNetwork.AutomaticallySyncScene = true;
-        PhotonNetwork.AddCallbackTarget(this);
-    }
-
-    public override void OnDisable()
-    {
-        PhotonNetwork.RemoveCallbackTarget(this);
+        return spawnPoints.Length == 0 ? transform : spawnPoints[Random.Range(0, spawnPoints.Length)];
     }
 }
