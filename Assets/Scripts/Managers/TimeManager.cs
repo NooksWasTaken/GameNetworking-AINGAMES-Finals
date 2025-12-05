@@ -10,6 +10,9 @@ public class TimeManager : MonoBehaviourPunCallbacks
     public float preMatchCountdown = 5f;
     public TextMeshProUGUI timerText;
 
+    [Header("Progress Canvas")]
+    public GameObject progressCanvas;
+
     [Header("Game Over")]
     public GameObject GameOverScreen;
 
@@ -135,6 +138,8 @@ public class TimeManager : MonoBehaviourPunCallbacks
 
         Time.timeScale = 0f;
 
+        progressCanvas.SetActive(false);
+
         if (GameOverScreen != null)
             GameOverScreen.SetActive(true);
 
@@ -149,7 +154,7 @@ public class TimeManager : MonoBehaviourPunCallbacks
 
         var players = GameObject.FindObjectsByType<RB_PlayerMove>(FindObjectsSortMode.None);
         foreach (var p in players)
-            p.gameObject.SetActive(false);
+            p.enabled = false;
         Debug.Log("Disabled Player!");
     }
 }

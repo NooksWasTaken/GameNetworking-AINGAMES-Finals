@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviourPun
     public int maxTrashCount = 10;
     public int currentTrashCount = 0;
 
+    [Header("Progress Canvas")]
+    public GameObject progressCanvas;
+    
     [Header("Win Screen")]
     public GameObject WinScreen;
 
@@ -83,6 +86,7 @@ public class GameManager : MonoBehaviourPun
 
         if (trashFillImage.fillAmount >= 1f && WinScreen != null)
             {
+                progressCanvas.SetActive(false);
                 WinScreen.SetActive(true);
                 screenCamera.SetActive(true);
                 Cursor.visible = true;
@@ -109,7 +113,7 @@ public class GameManager : MonoBehaviourPun
         RB_PlayerMove[] players = GameObject.FindObjectsByType<RB_PlayerMove>(FindObjectsSortMode.None);
 
         foreach (var player in players)
-            player.gameObject.SetActive(false);
+            player.enabled = false; ;
 
         Time.timeScale = 0f;
 
