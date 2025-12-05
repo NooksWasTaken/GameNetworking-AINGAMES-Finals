@@ -15,13 +15,8 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        if (!PhotonNetwork.IsConnected || !PhotonNetwork.InRoom)
-        {
-            Debug.LogWarning("Not connected to Photon or not in a room yet.");
-            return;
-        }
-
-        TrySpawnPlayer();
+        if (!PhotonNetwork.IsConnected)
+            Debug.LogWarning("Not connected yet.");
     }
 
     public override void OnJoinedRoom()

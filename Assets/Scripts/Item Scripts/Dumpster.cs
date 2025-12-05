@@ -50,21 +50,25 @@ public class Dumpster : MonoBehaviourPun
 
     void HandleTrashDestruction(Trash trash)
     {
+        if (trash == null) return;
+        if (trash.photonView == null) return;
+
+        int id = trash.photonView.ViewID;
+
+        if (PhotonView.Find(id) == null)
+            return;
+
         Vector3 position = trash.transform.position;
 
-        if (trash.photonView.IsMine || PhotonNetwork.IsMasterClient)
-        {
-            PhotonNetwork.Destroy(trash.photonView);
-        }
+        PhotonNetwork.Destroy(trash.gameObject);
 
         GameManager gm = FindFirstObjectByType<GameManager>();
         if (gm != null)
-        {
             gm.TrashDumped();
-        }
 
-        photonView.RPC(nameof(RPC_SpawnSmoke), RpcTarget.AllBuffered, position);
+        photonView.RPC(nameof(RPC_SpawnSmoke), RpcTarget.All, position);
     }
+
 
     [PunRPC]
     void RPC_RequestDumpTrash(int targetViewID)
