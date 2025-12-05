@@ -554,8 +554,8 @@ MonoBehaviour:
   groundlayer:
     serializedVersion: 2
     m_Bits: 4096
-  minWait: 0
-  maxWait: 3
+  minWait: 2
+  maxWait: 4
   range: 100
   trashLayer:
     serializedVersion: 2
@@ -653,7 +653,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 897b34267f422c1499700402763d096e, type: 3}
   m_Controller: {fileID: 9100000, guid: ed64e0335d5c5a6468fdcc52f4134a7c, type: 2}
-  m_CullingMode: 0
+  m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
