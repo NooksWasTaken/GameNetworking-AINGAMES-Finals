@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Photon.Pun;
+using System.Collections.Generic;
 
 public class Dumpster : MonoBehaviourPun
 {
@@ -12,6 +13,8 @@ public class Dumpster : MonoBehaviourPun
     [Header("Smoke Effect")]
     public GameObject smokeEffectPrefab;
     public float smokeLifetime = 3f;
+
+    private HashSet<PhotonView> processingTrash = new HashSet<PhotonView>();
 
     void Start()
     {
@@ -37,14 +40,18 @@ public class Dumpster : MonoBehaviourPun
             if (col == null) continue;
 
             Trash trash = col.GetComponent<Trash>();
-            if (trash == null) continue;
+            if (trash == null || trash.photonView == null) continue;
 
             InteractableItem item = trash.GetComponent<InteractableItem>();
             if (item != null && item.isPickedUp) continue;
 
+            if (processingTrash.Contains(trash.photonView)) continue;
+
+            processingTrash.Add(trash.photonView);
+
             if (PhotonNetwork.IsMasterClient)
             {
-                StartCoroutine(DestroyTrashSafely(trash));
+                DestroyTrashImmediately(trash);
             }
             else
             {
@@ -53,28 +60,26 @@ public class Dumpster : MonoBehaviourPun
         }
     }
 
-    private IEnumerator DestroyTrashSafely(Trash trash)
+    private void DestroyTrashImmediately(Trash trash)
     {
-        if (trash == null || trash.photonView == null) yield break;
+        if (trash == null || trash.photonView == null) return;
 
         PhotonView targetView = trash.photonView;
+
         if (!targetView.IsMine)
         {
             targetView.TransferOwnership(PhotonNetwork.LocalPlayer);
-            yield return null;
         }
-
-        Collider col = trash.GetComponent<Collider>();
-        if (col != null) col.enabled = false;
 
         Vector3 position = trash.transform.position;
 
-        PhotonNetwork.Destroy(targetView.gameObject);
-
+        photonView.RPC(nameof(RPC_SpawnSmoke), RpcTarget.All, position);
         GameManager gm = FindFirstObjectByType<GameManager>();
         gm?.TrashDumped();
 
-        photonView.RPC(nameof(RPC_SpawnSmoke), RpcTarget.All, position);
+        PhotonNetwork.Destroy(targetView.gameObject);
+
+        processingTrash.Remove(targetView);
     }
 
     [PunRPC]
@@ -88,7 +93,10 @@ public class Dumpster : MonoBehaviourPun
         Trash trash = targetView.GetComponent<Trash>();
         if (trash != null)
         {
-            StartCoroutine(DestroyTrashSafely(trash));
+            if (processingTrash.Contains(targetView)) return;
+            processingTrash.Add(targetView);
+
+            DestroyTrashImmediately(trash);
         }
     }
 
@@ -102,7 +110,6 @@ public class Dumpster : MonoBehaviourPun
             Destroy(smoke, smokeLifetime);
         }
     }
-
     private void OnDrawGizmos()
     {
         if (boxCollider == null) return;
