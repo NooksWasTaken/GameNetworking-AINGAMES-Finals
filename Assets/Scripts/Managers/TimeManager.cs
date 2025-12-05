@@ -1,6 +1,7 @@
 using UnityEngine;
 using Photon.Pun;
 using TMPro;
+using UnityEditor;
 
 public class TimeManager : MonoBehaviourPunCallbacks
 {
@@ -132,6 +133,9 @@ public class TimeManager : MonoBehaviourPunCallbacks
 
         if (GameOverScreen != null)
             GameOverScreen.SetActive(true);
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
 
         SoundManager.StopLoopingSound(SoundType.BGM);
         SoundManager.StopLoopingSound(SoundType.WALK);

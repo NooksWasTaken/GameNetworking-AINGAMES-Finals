@@ -80,6 +80,9 @@ public class GameManager : MonoBehaviourPun
         if (trashFillImage.fillAmount >= 1f && WinScreen != null)
             {
                 WinScreen.SetActive(true);
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+
                 if (PhotonNetwork.IsMasterClient)
                 {
                     photonView.RPC("RPC_GameWin", RpcTarget.All);

@@ -5,6 +5,10 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
+using System.Reflection;
+using Unity.Burst.Intrinsics;
+using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 
 public class PhotonLobby : MonoBehaviourPunCallbacks
 {
@@ -131,6 +135,12 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
         CreateRoom();
     }
 
-
-
+    public void OnQuitButton()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
+    }
 }
