@@ -117604,7 +117604,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomManager
   playerPrefab: {fileID: 2363065445299639129, guid: cda962041fe6e4e4d9c47651eec10d8e, type: 3}
-  spawnPoint: {fileID: 2007080366}
+  spawnPoints:
+  - {fileID: 2007080366}
 --- !u!1 &1900574083 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 159082, guid: cc10ce20cd2faea4ca8cb6505e5861d5, type: 3}
