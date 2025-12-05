@@ -95,7 +95,7 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
         {
             IsVisible = true,
             IsOpen = true,
-            MaxPlayers = 2
+            MaxPlayers = 4,
         };
 
         PhotonNetwork.CreateRoom(roomName, roomOps);
