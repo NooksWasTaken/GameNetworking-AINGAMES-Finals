@@ -28,18 +28,12 @@ public class Dumpster : MonoBehaviourPun
 
     void FixedUpdate()
     {
-        // Only detect on MasterClient or mark requests on remote
         if (PhotonNetwork.IsMasterClient)
-        {
             DetectAndDestroyTrashMaster();
-        }
         else
-        {
             DetectAndRequestTrashRemote();
-        }
     }
 
-    #region MasterClient Logic
     private void DetectAndDestroyTrashMaster()
     {
         Vector3 center = boxCollider.bounds.center;
@@ -59,41 +53,49 @@ public class Dumpster : MonoBehaviourPun
             InteractableItem item = trash.GetComponent<InteractableItem>();
             if (item != null && item.isPickedUp) continue; // skip held items
 
-            // Only process each trash once
             if (!processingTrashMaster.Contains(trash.photonView))
             {
                 processingTrashMaster.Add(trash.photonView);
-                DestroyTrashImmediately(trash);
+                StartCoroutine(DestroyTrashAfterOwnership(trash));
             }
         }
     }
 
-    private void DestroyTrashImmediately(Trash trash)
+    private IEnumerator DestroyTrashAfterOwnership(Trash trash)
     {
-        if (trash == null || trash.photonView == null) return;
+        if (trash == null || trash.photonView == null)
+        {
+            processingTrashMaster.Remove(trash?.photonView);
+            yield break;
+        }
 
         PhotonView targetView = trash.photonView;
 
         // Ensure MasterClient owns it
         if (!targetView.IsMine)
+        {
             targetView.TransferOwnership(PhotonNetwork.LocalPlayer);
+
+            // Wait until ownership is transferred
+            while (!targetView.IsMine)
+            {
+                yield return null;
+            }
+        }
 
         Vector3 position = trash.transform.position;
 
-        // Spawn smoke and increment score immediately
+        // Spawn smoke and increment score
         photonView.RPC(nameof(RPC_SpawnSmoke), RpcTarget.All, position);
         GameManager gm = FindFirstObjectByType<GameManager>();
         gm?.TrashDumped();
 
-        // Destroy the object across all clients
+        // Destroy safely
         PhotonNetwork.Destroy(targetView.gameObject);
 
-        // Clean up
         processingTrashMaster.Remove(targetView);
     }
-    #endregion
 
-    #region Remote Client Logic
     private void DetectAndRequestTrashRemote()
     {
         Vector3 center = boxCollider.bounds.center;
@@ -111,7 +113,7 @@ public class Dumpster : MonoBehaviourPun
             if (trash == null || trash.photonView == null) continue;
 
             InteractableItem item = trash.GetComponent<InteractableItem>();
-            if (item != null && item.isPickedUp) continue;
+            if (item != null && item.isPickedUp) continue; // skip held items
 
             int viewID = trash.photonView.ViewID;
             if (!requestedTrashIDs.Contains(viewID))
@@ -121,7 +123,6 @@ public class Dumpster : MonoBehaviourPun
             }
         }
     }
-    #endregion
 
     [PunRPC]
     void RPC_RequestDumpTrash(int targetViewID)
@@ -135,7 +136,7 @@ public class Dumpster : MonoBehaviourPun
         if (trash != null && !processingTrashMaster.Contains(targetView))
         {
             processingTrashMaster.Add(targetView);
-            DestroyTrashImmediately(trash);
+            StartCoroutine(DestroyTrashAfterOwnership(trash));
         }
     }
 
