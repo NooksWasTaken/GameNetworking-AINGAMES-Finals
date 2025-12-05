@@ -81234,7 +81234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55c89f3725acd1d46b4fa630caa4d442, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SyncedCountdownTimer
-  countdownDuration: 5
+  countdownDuration: 180
   preMatchCountdown: 10
   timerText: {fileID: 1387394107}
   progressCanvas: {fileID: 1547453516}
