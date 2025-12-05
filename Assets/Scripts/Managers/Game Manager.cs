@@ -92,6 +92,10 @@ public class GameManager : MonoBehaviourPun
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
 
+                SoundManager.StopLoopingSound(SoundType.BGM);
+                SoundManager.StopLoopingSound(SoundType.WALK);
+                SoundManager.StopLoopingSound(SoundType.RUN);
+
                 if (PhotonNetwork.IsMasterClient)
                 {
                     photonView.RPC("RPC_GameWin", RpcTarget.All);
