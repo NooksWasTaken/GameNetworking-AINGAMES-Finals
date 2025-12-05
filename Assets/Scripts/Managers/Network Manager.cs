@@ -18,9 +18,12 @@ public class MenuRoomController : MonoBehaviourPunCallbacks
     public float errorDisplayTime = 3f;
 
     private bool isConnecting = false;
+    private bool isReady = false; // NEW
 
     private void Start()
     {
+        PhotonNetwork.AutomaticallySyncScene = true;
+
         SoundManager.PlayLoopingSound(SoundType.BGM2, 1);
 
         if (!PhotonNetwork.IsConnected)
@@ -30,9 +33,24 @@ public class MenuRoomController : MonoBehaviourPunCallbacks
         }
     }
 
+    // NEW — Now we wait until truly connected before allowing Join/Create
+    public override void OnConnectedToMaster()
+    {
+        Debug.Log("Connected to Master. Joining Lobby...");
+        PhotonNetwork.JoinLobby();
+    }
+
+    // NEW — Matchmaking is ready only after reaching lobby
+    public override void OnJoinedLobby()
+    {
+        isReady = true;
+        Debug.Log("Joined Lobby. Matchmaking Ready.");
+    }
+
     public void CreateRoom()
     {
-        if (!PhotonNetwork.IsConnected || isConnecting) return;
+        if (!isReady || isConnecting) return; // UPDATED
+
         isConnecting = true;
 
         string roomName = createRoomInput.text.Trim();
@@ -41,18 +59,25 @@ public class MenuRoomController : MonoBehaviourPunCallbacks
 
         PlayerPrefs.SetString("RoomSceneToLoad", sceneToLoad);
 
-        RoomOptions options = new RoomOptions { IsVisible = true, IsOpen = true, MaxPlayers = 4 };
+        RoomOptions options = new RoomOptions
+        {
+            IsVisible = true,
+            IsOpen = true,
+            MaxPlayers = 4
+        };
+
         PhotonNetwork.CreateRoom(roomName, options);
         Debug.Log("Creating room: " + roomName);
-
     }
 
     public void JoinRoom()
     {
-        if (!PhotonNetwork.IsConnected || isConnecting) return;
+        if (!isReady || isConnecting) return; // UPDATED
+
         isConnecting = true;
 
         string roomName = joinRoomInput.text.Trim();
+
         if (string.IsNullOrEmpty(roomName))
             PhotonNetwork.JoinRandomRoom();
         else
@@ -79,11 +104,11 @@ public class MenuRoomController : MonoBehaviourPunCallbacks
     {
         isConnecting = false;
         Debug.Log("Joined room successfully!");
-        if (PhotonNetwork.IsMasterClient)
+
+        string scene = PlayerPrefs.GetString("RoomSceneToLoad", "");
+        if (!string.IsNullOrEmpty(scene) && PhotonNetwork.IsMasterClient)
         {
-            string scene = PlayerPrefs.GetString("RoomSceneToLoad", "");
-            if (!string.IsNullOrEmpty(scene))
-                PhotonNetwork.LoadLevel(scene);
+            PhotonNetwork.LoadLevel(scene);
         }
 
         SoundManager.StopLoopingSound(SoundType.BGM2);
@@ -109,9 +134,9 @@ public class MenuRoomController : MonoBehaviourPunCallbacks
     public void QuitGame()
     {
         #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
+        UnityEditor.EditorApplication.isPlaying = false;
         #else
-            Application.Quit();
-    #   endif
+        Application.Quit();
+        #endif
     }
 }

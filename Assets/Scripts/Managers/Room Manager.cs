@@ -1,6 +1,5 @@
 using UnityEngine;
 using Photon.Pun;
-using Photon.Realtime;
 
 public class RoomManager : MonoBehaviourPunCallbacks
 {
@@ -8,46 +7,32 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public GameObject playerPrefab;
     public Transform spawnPoint;
 
+    private bool playerSpawned = false;
+
     private void Awake()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
     }
 
+    private void Start()
+    {
+        TrySpawnPlayer();
+    }
+
     public override void OnJoinedRoom()
     {
-        Debug.Log("Joined room: " + PhotonNetwork.CurrentRoom.Name);
-
-        if (PhotonNetwork.IsMasterClient)
-        {
-            string sceneToLoad = PlayerPrefs.GetString("RoomSceneToLoad", "");
-
-            if (!string.IsNullOrEmpty(sceneToLoad))
-            {
-                Debug.Log("MasterClient loading scene: " + sceneToLoad);
-                PhotonNetwork.LoadLevel(sceneToLoad);
-            }
-            else
-            {
-                Debug.LogError("No scene stored from MenuRoomController!");
-            }
-        }
+        TrySpawnPlayer();
     }
 
-    public override void OnJoinRoomFailed(short returnCode, string message)
+    private void TrySpawnPlayer()
     {
-        Debug.LogError("Join room failed: " + message);
-    }
+        if (playerSpawned) return;
+        if (!PhotonNetwork.InRoom) return;
+        if (playerPrefab == null || spawnPoint == null) return;
 
-    public override void OnCreateRoomFailed(short returnCode, string message)
-    {
-        Debug.LogError("Create room failed: " + message);
-    }
+        PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, spawnPoint.rotation);
+        playerSpawned = true;
 
-    void Start()
-    {
-        if (PhotonNetwork.InRoom && playerPrefab != null && spawnPoint != null)
-        {
-            PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, spawnPoint.rotation);
-        }
+        Debug.Log("Player INSTantiated for: " + PhotonNetwork.NickName);
     }
 }
