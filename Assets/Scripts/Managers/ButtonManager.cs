@@ -1,6 +1,5 @@
 using UnityEngine;
 using Photon.Pun;
-using Photon.Realtime;
 using UnityEngine.SceneManagement;
 
 public class ButtonManager : MonoBehaviourPunCallbacks
@@ -11,17 +10,17 @@ public class ButtonManager : MonoBehaviourPunCallbacks
     public void OnQuitButton()
     {
         #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
+            UnityEditor.EditorApplication.isPlaying = false;
         #else
-        Application.Quit();
+            Application.Quit();
         #endif
     }
 
     public void OnMenuButton()
     {
-        if (PhotonNetwork.InRoom)
+        if (PhotonNetwork.IsConnected)
         {
-            PhotonNetwork.LeaveRoom();
+            StartCoroutine(DisconnectAndLoad());
         }
         else
         {
@@ -29,20 +28,21 @@ public class ButtonManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public override void OnLeftRoom()
+    private System.Collections.IEnumerator DisconnectAndLoad()
     {
+        PhotonNetwork.Disconnect();
+
+        while (PhotonNetwork.IsConnected)
+        {
+            yield return null;
+        }
+
         LoadMenuScene();
     }
 
     private void LoadMenuScene()
     {
         if (!string.IsNullOrEmpty(SceneToLoad))
-        {
             SceneManager.LoadScene(SceneToLoad);
-        }
-        else
-        {
-            Debug.LogWarning("u forgot to set the scene bozo");
-        }
     }
 }
