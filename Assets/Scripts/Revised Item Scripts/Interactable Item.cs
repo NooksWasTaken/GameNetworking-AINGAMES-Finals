@@ -17,19 +17,21 @@ public class InteractableItem : MonoBehaviourPun
         rb = GetComponent<Rigidbody>();
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         if (isPickedUp && holdPoint != null)
         {
-            // smoothly move the thing to its hold position
-            rb.MovePosition(Vector3.Lerp(rb.position, holdPoint.position, followSpeed * Time.fixedDeltaTime));
-            rb.MoveRotation(Quaternion.Lerp(rb.rotation, holdPoint.rotation, followSpeed * Time.fixedDeltaTime));
+            rb.MovePosition(Vector3.Lerp(rb.position, holdPoint.position, followSpeed * Time.deltaTime));
+            rb.MoveRotation(Quaternion.Lerp(rb.rotation, holdPoint.rotation, followSpeed * Time.deltaTime));
         }
     }
+
 
     public void PickUp(Transform newHoldPoint)
     {
         // pls pls pls work
+        isPickedUp = true;
+
         if (!photonView.IsMine)
             photonView.RequestOwnership();
 

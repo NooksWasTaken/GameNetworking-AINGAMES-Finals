@@ -6,6 +6,7 @@ public class Dumpster : MonoBehaviourPun
     [Header("Detection")]
     public BoxCollider boxCollider;
     private Collider[] overlapResults = new Collider[16];
+    public LayerMask dumpsterItems;
 
     [Header("Smoke Effect")]
     public GameObject smokeEffectPrefab;
@@ -27,15 +28,18 @@ public class Dumpster : MonoBehaviourPun
         Vector3 halfExtents = boxCollider.bounds.extents;
         Quaternion rotation = transform.rotation;
 
-        int hits = Physics.OverlapBoxNonAlloc(center, halfExtents, overlapResults, rotation);
+        int hits = Physics.OverlapBoxNonAlloc(center, halfExtents, overlapResults, rotation, dumpsterItems);
 
         for (int i = 0; i < hits; i++)
         {
             Collider col = overlapResults[i];
             if (col == null) continue;
 
-            var trash = col.GetComponent<Trash>();
+            Trash trash = col.GetComponent<Trash>();
             if (trash == null) continue;
+
+            InteractableItem item = trash.GetComponent<InteractableItem>();
+            if (item != null && item.isPickedUp) continue;
 
             if (PhotonNetwork.IsMasterClient)
             {
@@ -50,25 +54,20 @@ public class Dumpster : MonoBehaviourPun
 
     void HandleTrashDestruction(Trash trash)
     {
-        if (trash == null) return;
-        if (trash.photonView == null) return;
+        if (trash == null || trash.photonView == null) return;
 
-        int id = trash.photonView.ViewID;
-
-        if (PhotonView.Find(id) == null)
-            return;
+        // prevent double destruction
+        if (PhotonView.Find(trash.photonView.ViewID) == null) return;
 
         Vector3 position = trash.transform.position;
 
         PhotonNetwork.Destroy(trash.gameObject);
 
         GameManager gm = FindFirstObjectByType<GameManager>();
-        if (gm != null)
-            gm.TrashDumped();
+        gm?.TrashDumped();
 
         photonView.RPC(nameof(RPC_SpawnSmoke), RpcTarget.All, position);
     }
-
 
     [PunRPC]
     void RPC_RequestDumpTrash(int targetViewID)
@@ -78,7 +77,7 @@ public class Dumpster : MonoBehaviourPun
         PhotonView targetView = PhotonView.Find(targetViewID);
         if (targetView == null) return;
 
-        var trash = targetView.GetComponent<Trash>();
+        Trash trash = targetView.GetComponent<Trash>();
         if (trash != null)
         {
             HandleTrashDestruction(trash);

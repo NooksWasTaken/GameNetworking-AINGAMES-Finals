@@ -97674,6 +97674,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Dumpster
   boxCollider: {fileID: 0}
+  dumpsterItems:
+    serializedVersion: 2
+    m_Bits: 64
   smokeEffectPrefab: {fileID: 104829970813648393, guid: d3015b7eea383f64d8b81f965cc466e7, type: 3}
   smokeLifetime: 3
 --- !u!64 &1535454155

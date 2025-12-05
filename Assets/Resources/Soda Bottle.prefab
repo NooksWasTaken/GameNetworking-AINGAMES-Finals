@@ -171,7 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableItem
   isPickedUp: 0
-  followSpeed: 15
+  followSpeed: 25
 --- !u!114 &6239564403254380997
 MonoBehaviour:
   m_ObjectHideFlags: 0
