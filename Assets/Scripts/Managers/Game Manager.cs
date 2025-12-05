@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviourPun
     [Header("Win Screen")]
     public GameObject WinScreen;
 
+    [Header("Camera")]
+    public GameObject screenCamera;
+
     public static GameManager Instance;
 
     void Awake()
@@ -26,6 +29,7 @@ public class GameManager : MonoBehaviourPun
     void Start()
     {
         UpdateFill();
+        screenCamera.SetActive(false);
     }
 
     public void TrashDumped()
@@ -80,6 +84,7 @@ public class GameManager : MonoBehaviourPun
         if (trashFillImage.fillAmount >= 1f && WinScreen != null)
             {
                 WinScreen.SetActive(true);
+                screenCamera.SetActive(true);
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
 

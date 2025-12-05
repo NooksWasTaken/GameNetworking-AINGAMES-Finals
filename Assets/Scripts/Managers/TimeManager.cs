@@ -13,6 +13,9 @@ public class TimeManager : MonoBehaviourPunCallbacks
     [Header("Game Over")]
     public GameObject GameOverScreen;
 
+    [Header("Camera")]
+    public GameObject screenCamera;
+
     private double startTime;
     private float currentTime;
     private bool timerRunning = false;
@@ -37,6 +40,7 @@ public class TimeManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.InRoom)
         {
             TryInitializeTimer();
+            screenCamera.SetActive(false);
         }
     }
 
@@ -133,6 +137,8 @@ public class TimeManager : MonoBehaviourPunCallbacks
 
         if (GameOverScreen != null)
             GameOverScreen.SetActive(true);
+
+        screenCamera.SetActive(true);
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
