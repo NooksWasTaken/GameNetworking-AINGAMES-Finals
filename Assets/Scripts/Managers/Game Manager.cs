@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviourPun
 
         if (trashFillImage.fillAmount >= 1f && WinScreen != null)
             {
-                progressCanvas.SetActive(false)
+                progressCanvas.SetActive(false);
                 WinScreen.SetActive(true);
                 screenCamera.SetActive(true);
                 Cursor.visible = true;
